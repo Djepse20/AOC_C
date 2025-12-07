@@ -67,33 +67,30 @@ Seq get_seq(uint64_t val, size_t len) {
       break;
     }
     uint64_t rem = val % 10;
-
     unique = unique * 10 + rem;
     num_seen += 1;
     val /= 10;
   }
-
   uint64_t value = reverse(unique, len);
-
   uint64_t val_digits = get_digits(value);
-  Seq unique_with_digits = {.val = value, .rest = val, .digits = val_digits};
-  return unique_with_digits;
+  Seq seq = {.val = value, .rest = val, .digits = val_digits};
+  return seq;
 }
 int check_for_repetition(uint64_t val, size_t len) {
   size_t total_digits = get_digits(val);
-  Seq unique = get_seq(val, len);
-  size_t rest_digits = get_digits(unique.rest);
-  if (total_digits != rest_digits + unique.digits ||
-      rest_digits < unique.digits || unique.val == 0) {
+  Seq seq = get_seq(val, len);
+  size_t rest_digits = get_digits(seq.rest);
+  if (total_digits != rest_digits + seq.digits || rest_digits < seq.digits ||
+      seq.val == 0) {
 
     return 0;
   }
 
-  uint64_t rest = unique.rest;
+  uint64_t rest = seq.rest;
 
-  for (size_t digits = 0; digits < rest_digits; digits += unique.digits) {
+  for (size_t digits = 0; digits < rest_digits; digits += seq.digits) {
 
-    uint64_t value = unique.val;
+    uint64_t value = seq.val;
     while (value != 0) {
 
       uint64_t rem_val = value % 10;
@@ -107,33 +104,25 @@ int check_for_repetition(uint64_t val, size_t len) {
       rest /= 10;
     }
   }
-
   return 1;
 }
-// int is_repeated(uint64_t val) {
-//   size_t digits = get_digits(val);
 
-//   Unique unique_with_digits = get_first_unique_seq(val);
-
-//   return check_for_repetition(unique_with_digits);
-// }
 int is_repeated(uint64_t val) {
   uint64_t original = val;
   size_t val_digits = get_digits(val);
 
-  uint64_t half = 0;
   for (size_t idx = val_digits; 0 < idx; idx--) {
     if ((val_digits % idx) != 0) {
       continue;
     }
-    if (check_for_repetition(val, val_digits / idx)) {
-      printf("%llu", val_digits / idx);
+    size_t rep_digits = val_digits / idx;
+    if (check_for_repetition(val, rep_digits)) {
       return 1;
     }
   }
-
   return 0;
 }
+
 uint64_t sum_invalids_in_range(char *range) {
   uint64_t range_sum = 0;
   char *context;
@@ -148,8 +137,6 @@ uint64_t sum_invalids_in_range(char *range) {
   for (; start_val <= end_val; start_val++) {
 
     if (is_repeated(start_val)) {
-      printf("is_repeated: %llu  \n", start_val);
-
       range_sum += start_val;
     }
   }

@@ -25,7 +25,6 @@ FILE *open_file_from_args(int argc, char **argv) {
     exit(EXIT_FAILURE);
   }
   FILE *file;
-  printf("hmm: %s\n", argv[1]);
   fopen_s(&file, argv[1], "r");
   return file;
 }
