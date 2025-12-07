@@ -1,5 +1,4 @@
 #include "../AOC_UTIL.h"
-#include <corecrt_search.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
