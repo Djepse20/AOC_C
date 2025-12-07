@@ -92,12 +92,10 @@ uint64_t find_max(char *line, size_t len, size_t min_distance_to_end) {
   return idx;
 }
 
-uint64_t largest_jolt_for_line(char *line, size_t digitis) {
-  size_t len = strlen(line);
+uint64_t largest_jolt_for_line(char *line, size_t len, size_t digitis) {
   uint64_t value = 0;
   for (size_t idx = 0; idx < digitis; idx++) {
     size_t ele_idx = find_max(line, len, digitis - idx);
-
     uint64_t val = get_num(line[ele_idx]);
     value = value * 10 + (val % 10);
     line += ele_idx + 1;
@@ -108,12 +106,16 @@ uint64_t largest_jolt_for_line(char *line, size_t digitis) {
 
 uint64_t jolt_sum(char *lines) {
   uint64_t sum = 0;
-  char *context;
+  char *context = lines;
+
   char *line = strtok_s(lines, "\n", &context);
+  size_t str_len = context - line - 1;
+
   while (line != NULL) {
-    uint64_t val = largest_jolt_for_line(line, 12);
+    uint64_t val = largest_jolt_for_line(line, str_len, 12);
     sum += val;
     line = strtok_s(NULL, "\n", &context);
+    str_len = context - line - 1;
   }
   return sum;
 }
