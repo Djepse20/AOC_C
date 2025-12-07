@@ -52,72 +52,55 @@ int is_repeated_twice(uint64_t val) {
   return half == val;
 }
 
-int is_repeated(uint64_t val) {
-  uint64_t original = val;
-  size_t val_digits = get_digits(val);
-
-  uint64_t half = 0;
-  for (size_t idx = val_digits; 0 < idx; idx--) {
-    if ((val_digits % idx) != 0) {
-      continue;
-    }
-
-    for (size_t jdx = digits; 0 < jdx; jdx--) {
-      half = half * 10 + (val % 10);
-      val /= 10;
-    }
-    half = reverse(half, half_digits);
-    //   printf("%llu,%llu, %llu, %llu\n", digits, original, half, val);
-    if (hal)
-      return half == val;
-  }
-
-  return 0;
-}
-typedef struct Unique {
+typedef struct Seq {
   uint64_t val;
   uint64_t rest;
   size_t digits;
-} Unique;
+} Seq;
 
-Unique get_first_unique_seq(uint64_t val) {
-  int seen[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+Seq get_seq(uint64_t val, size_t len) {
   uint64_t unique = 0;
   size_t num_seen = 0;
-  printf("%llu\n", val);
 
   while (val != 0) {
-    uint64_t rem = val % 10;
-
-    if (unique != 0 && seen[rem]) {
-
+    if (len == num_seen) {
       break;
     }
+    uint64_t rem = val % 10;
 
     unique = unique * 10 + rem;
-    seen[rem] = 1;
     num_seen += 1;
     val /= 10;
   }
 
-  Unique unique_with_digits = {
-      .val = reverse(unique, num_seen), .rest = val, .digits = num_seen};
+  uint64_t value = reverse(unique, len);
+
+  uint64_t val_digits = get_digits(value);
+  Seq unique_with_digits = {.val = value, .rest = val, .digits = val_digits};
   return unique_with_digits;
 }
-int check_for_repetition(Unique unique) {
-  size_t rep_seen = 0;
+int check_for_repetition(uint64_t val, size_t len) {
+  size_t total_digits = get_digits(val);
+  Seq unique = get_seq(val, len);
   size_t rest_digits = get_digits(unique.rest);
-  if (rest_digits < unique.digits) {
+  if (total_digits != rest_digits + unique.digits ||
+      rest_digits < unique.digits || unique.val == 0) {
+
     return 0;
   }
+
   uint64_t rest = unique.rest;
+
   for (size_t digits = 0; digits < rest_digits; digits += unique.digits) {
+
     uint64_t value = unique.val;
     while (value != 0) {
 
       uint64_t rem_val = value % 10;
       uint64_t rem_rest = rest % 10;
+
       if (rem_val != rem_rest) {
+
         return 0;
       }
       value /= 10;
@@ -134,7 +117,23 @@ int check_for_repetition(Unique unique) {
 
 //   return check_for_repetition(unique_with_digits);
 // }
+int is_repeated(uint64_t val) {
+  uint64_t original = val;
+  size_t val_digits = get_digits(val);
 
+  uint64_t half = 0;
+  for (size_t idx = val_digits; 0 < idx; idx--) {
+    if ((val_digits % idx) != 0) {
+      continue;
+    }
+    if (check_for_repetition(val, val_digits / idx)) {
+      printf("%llu", val_digits / idx);
+      return 1;
+    }
+  }
+
+  return 0;
+}
 uint64_t sum_invalids_in_range(char *range) {
   uint64_t range_sum = 0;
   char *context;
