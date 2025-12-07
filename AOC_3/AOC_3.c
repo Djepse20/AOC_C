@@ -82,15 +82,13 @@ uint64_t get_num(char ch) { return ch - '0'; }
 uint64_t find_max(char *line, size_t len, size_t min_distance_to_end) {
   size_t idx = 0;
   uint64_t max = 0;
-  for (size_t jdx = 0; jdx < len; jdx++) {
+  for (size_t jdx = 0; jdx <= len - min_distance_to_end; jdx++) {
     uint64_t value = get_num(line[jdx]);
-
-    if (max < value && (len - jdx) >= min_distance_to_end) {
+    if (max < value) {
       idx = jdx;
       max = value;
     }
   }
-
   return idx;
 }
 
