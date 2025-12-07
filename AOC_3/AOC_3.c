@@ -1,4 +1,5 @@
 #include "../AOC_UTIL.h"
+#include <corecrt_search.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -111,10 +112,13 @@ uint64_t jolt_sum(char *lines) {
   char *line = strtok_s(lines, "\n", &context);
   size_t str_len = context - line - 1;
 
-  while (line != NULL) {
+  while (1) {
     uint64_t val = largest_jolt_for_line(line, str_len, 12);
     sum += val;
     line = strtok_s(NULL, "\n", &context);
+    if (line == NULL) {
+      break;
+    }
     str_len = context - line - 1;
   }
   return sum;
