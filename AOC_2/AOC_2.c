@@ -107,10 +107,16 @@ int check_for_repetition(uint64_t val, size_t len) {
   return 1;
 }
 
-int is_repeated(uint64_t val) {
+int is_repeated(uint64_t val, uint64_t exact) {
   uint64_t original = val;
   size_t val_digits = get_digits(val);
 
+  if (exact != UINT64_MAX) {
+    if (val_digits % exact != 0) {
+      return 0;
+    }
+    return check_for_repetition(val, val_digits / exact);
+  }
   for (size_t idx = val_digits; 0 < idx; idx--) {
     if ((val_digits % idx) != 0) {
       continue;
@@ -123,33 +129,57 @@ int is_repeated(uint64_t val) {
   return 0;
 }
 
-uint64_t sum_invalids_in_range(char *range) {
+int check_for_repetition_str(char *val, uint64_t exact) {
+  size_t val_digits = strlen(val);
+
+  if (exact != UINT64_MAX) {
+    if (val_digits % exact != 0) {
+      return 0;
+    }
+
+    return repeats_pat(val, 0, exact);
+  }
+  for (size_t idx = val_digits; 0 < idx; idx--) {
+
+    if ((val_digits % idx) != 0) {
+      continue;
+    }
+    size_t rep_digits = val_digits / idx;
+    if (repeats_pat(val, 0, rep_digits)) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
+uint64_t sum_invalids_in_range(char *range, uint64_t exact) {
   uint64_t range_sum = 0;
   char *context;
 
   char *start = strtok_s(range, "-", &context);
 
   char *end = strtok_s(NULL, "-", &context);
+  size_t start_val = strtoull(start, NULL, 10);
+  size_t end_val = strtoull(end, NULL, 10);
 
-  uint64_t start_val = strtoll(start, NULL, 10);
-  uint64_t end_val = strtoll(end, NULL, 10);
+  for (start_val = start_val; start_val <= end_val;
+       start_val++, start = inc_str(start)) {
 
-  for (; start_val <= end_val; start_val++) {
-
-    if (is_repeated(start_val)) {
+    if (check_for_repetition_str(start, exact)) {
+      printf("%s\n", start);
       range_sum += start_val;
     }
   }
   return range_sum;
 }
 
-uint64_t get_total_invalid_sum(char *lines) {
+uint64_t get_total_invalid_sum(char *lines, uint64_t exact) {
   uint64_t sum = 0;
 
   char *context;
   char *line = strtok_s(lines, ",", &context);
   while (line != NULL) {
-    sum += sum_invalids_in_range(line);
+    sum += sum_invalids_in_range(line, exact);
 
     line = strtok_s(NULL, ",", &context);
   }
@@ -159,5 +189,5 @@ uint64_t get_total_invalid_sum(char *lines) {
 int main(int argc, char **argv) {
   FILE *aoc = open_file_from_args(argc, argv);
   char *lines = read_file(aoc);
-  printf("sum: %llu", get_total_invalid_sum(lines));
+  printf("sum: %llu", get_total_invalid_sum(lines, UINT64_MAX));
 }

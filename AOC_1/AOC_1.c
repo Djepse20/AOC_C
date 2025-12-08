@@ -5,11 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-int16_t mod(int16_t a, int16_t b) { return (a % b + b) % b; }
 int16_t parse_line_and_dial(char *line, int16_t *curr_val) {
   // SAFETY: AOC input is assume to always be valid unless otherwise is
   // mentioned in the description of a puzzle.
-  printf("action: %s ", line);
   char direction = *line++;
   int16_t num = strtoll(line, NULL, 10);
 
@@ -30,7 +28,6 @@ int16_t parse_line_and_dial(char *line, int16_t *curr_val) {
 int16_t parse_line_and_dial_rotation(char *line, int16_t *curr_val) {
   // SAFETY: AOC input is assume to always be valid unless otherwise is
   // mentioned in the description of a puzzle.
-  printf("action: %s ", line);
   char direction = *line++;
   int16_t num = strtoll(line, NULL, 10);
   int16_t zeroesPassed = 0;
@@ -61,8 +58,6 @@ int16_t get_zero_count(char *lines) {
   while (line != NULL) {
     zero_count += parse_line_and_dial_rotation(line, &val);
 
-    printf(" zero_count %d\n", zero_count);
-
     line = strtok_s(NULL, "\n", &context);
   }
   return zero_count;
@@ -72,5 +67,6 @@ int main(int argc, char **argv) {
   FILE *aoc = open_file_from_args(argc, argv);
   char *lines = read_file(aoc);
   uint16_t zero_count = get_zero_count(lines);
-  printf("%d", zero_count);
+  char num[] = "5493345931999";
+  printf("%s", inc_str(num));
 }

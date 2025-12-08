@@ -77,8 +77,6 @@
 //   return counter;
 // }
 
-uint64_t get_num(char ch) { return ch - '0'; }
-
 uint64_t find_max(char *line, size_t len, size_t min_distance_to_end) {
   size_t idx = 0;
   uint64_t max = 0;
