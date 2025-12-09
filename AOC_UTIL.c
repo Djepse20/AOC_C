@@ -71,9 +71,8 @@ char *inc_str(char *str) {
   return str;
 }
 
-int repeats_pat(const char *str, size_t pat_start, size_t pat_end) {
-
-  size_t str_len = strlen(str);
+int repeats_pat(const char *str, size_t str_len, size_t pat_start,
+                size_t pat_end) {
 
   size_t pat_len = pat_end - pat_start;
   if (str_len % pat_len != 0 || pat_len == str_len) {

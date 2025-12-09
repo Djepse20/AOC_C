@@ -129,22 +129,22 @@ int is_repeated(uint64_t val, uint64_t exact) {
   return 0;
 }
 
-int check_for_repetition_str(char *val, size_t end_len, uint64_t exact) {
+int check_for_repetition_str(char *val, size_t str_len, uint64_t exact) {
 
   if (exact != UINT64_MAX) {
-    if (end_len % exact != 0) {
+    if (str_len % exact != 0) {
       return 0;
     }
 
-    return repeats_pat(val, 0, exact);
+    return repeats_pat(val, str_len, 0, exact);
   }
-  for (size_t idx = end_len; 0 < idx; idx--) {
+  for (size_t idx = str_len; 0 < idx; idx--) {
 
-    if ((end_len % idx) != 0) {
+    if ((str_len % idx) != 0) {
       continue;
     }
-    size_t rep_digits = end_len / idx;
-    if (repeats_pat(val, 0, rep_digits)) {
+    size_t rep_digits = str_len / idx;
+    if (repeats_pat(val, str_len, 0, rep_digits)) {
       return 1;
     }
   }
