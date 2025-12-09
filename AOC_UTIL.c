@@ -70,34 +70,27 @@ char *inc_str(char *str) {
   }
   return str;
 }
-
-int repeats_pat(const char *str, size_t str_len, size_t pat_start,
-                size_t pat_end) {
-
-  size_t pat_len = pat_end - pat_start;
-  if (str_len % pat_len != 0 || pat_len == str_len) {
-    return 0;
-  }
-  size_t reps = str_len / pat_len;
-
-  for (size_t idx = 0; idx < reps; idx++) {
-    for (size_t jdx = 0; jdx < pat_len; jdx++) {
-
-      if (str[jdx] != str[(idx * pat_len) + jdx]) {
-        return 0;
-      }
-    }
-  }
-  return 1;
-}
-
 int str_cmp_as_num(const char *str1, size_t len1, const char *str2,
                    size_t len2) {
 
   if (len1 != len2) {
     return len1 < len2 ? -1 : 1;
   }
-  return strcmp(str1, str2);
+  return strncmp(str1, str2, len2);
+}
+
+size_t repeats_pat(const char *str, size_t str_len, const char *pat,
+                   size_t pat_len) {
+  if (str_len % pat_len != 0 || pat_len == str_len) {
+    return 0;
+  }
+  for (size_t idx = 0; idx < str_len; idx += pat_len) {
+
+    if (strncmp(str + idx, pat, pat_len) != 0) {
+      return 0;
+    }
+  }
+  return 1;
 }
 
 FILE *open_file_from_args(int argc, char **argv) {

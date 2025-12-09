@@ -136,7 +136,7 @@ int check_for_repetition_str(char *val, size_t str_len, uint64_t exact) {
       return 0;
     }
 
-    return repeats_pat(val, str_len, 0, exact);
+    return repeats_pat(val, str_len, val, exact);
   }
   for (size_t idx = str_len; 0 < idx; idx--) {
 
@@ -144,7 +144,7 @@ int check_for_repetition_str(char *val, size_t str_len, uint64_t exact) {
       continue;
     }
     size_t rep_digits = str_len / idx;
-    if (repeats_pat(val, str_len, 0, rep_digits)) {
+    if (repeats_pat(val, str_len, val, rep_digits)) {
       return 1;
     }
   }
@@ -157,11 +157,8 @@ uint64_t sum_invalids_in_range(char *range, uint64_t exact) {
 
   char *start = strtok_s(range, "-", &context);
   size_t start_len = context - start - 1;
-  char *end = strtok_s(NULL, "-", &context);
-  size_t end_len = context - end;
-  if (*context != '\0') {
-    end_len -= 1;
-  }
+  char *end = context;
+  size_t end_len = strlen(end);
 
   for (; str_cmp_as_num(start, start_len, end, end_len) <= 0;
        end_len = dec_str(end, end_len)) {
