@@ -26,15 +26,13 @@ int16_t mod(int16_t a, int16_t b) { return (a % b + b) % b; }
 uint64_t get_num(char ch) { return ch - '0'; }
 char convert_to_char(uint64_t num) { return num + '0'; }
 
-char *dec_str(char *str) {
-  size_t len = strlen(str);
+int dec_str(char *str, size_t len) {
   for (size_t idx = len - 1; idx >= 0; idx--) {
 
     if (get_num(str[idx]) == 1 && idx == 0) {
-      str = calloc(len, sizeof(char));
-
-      memset(str, convert_to_char(9), len - 1);
-      str[len + 1] = '\0';
+      str[idx] = '9';
+      str[len - 1] = '\0';
+      len -= 1;
       break;
     }
     if (get_num(str[idx]) != 0) {
@@ -43,7 +41,7 @@ char *dec_str(char *str) {
     }
     str[idx] = convert_to_char(9);
   }
-  return str;
+  return len;
 }
 
 char *inc_str(char *str) {
@@ -94,9 +92,9 @@ int repeats_pat(const char *str, size_t pat_start, size_t pat_end) {
   return 1;
 }
 
-int str_cmp_as_num(const char *str1, const char *str2) {
-  size_t len1 = strlen(str1);
-  size_t len2 = strlen(str2);
+int str_cmp_as_num(const char *str1, size_t len1, const char *str2,
+                   size_t len2) {
+
   if (len1 != len2) {
     return len1 < len2 ? -1 : 1;
   }

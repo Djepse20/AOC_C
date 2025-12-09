@@ -129,22 +129,21 @@ int is_repeated(uint64_t val, uint64_t exact) {
   return 0;
 }
 
-int check_for_repetition_str(char *val, uint64_t exact) {
-  size_t val_digits = strlen(val);
+int check_for_repetition_str(char *val, size_t end_len, uint64_t exact) {
 
   if (exact != UINT64_MAX) {
-    if (val_digits % exact != 0) {
+    if (end_len % exact != 0) {
       return 0;
     }
 
     return repeats_pat(val, 0, exact);
   }
-  for (size_t idx = val_digits; 0 < idx; idx--) {
+  for (size_t idx = end_len; 0 < idx; idx--) {
 
-    if ((val_digits % idx) != 0) {
+    if ((end_len % idx) != 0) {
       continue;
     }
-    size_t rep_digits = val_digits / idx;
+    size_t rep_digits = end_len / idx;
     if (repeats_pat(val, 0, rep_digits)) {
       return 1;
     }
@@ -157,11 +156,17 @@ uint64_t sum_invalids_in_range(char *range, uint64_t exact) {
   char *context;
 
   char *start = strtok_s(range, "-", &context);
+  size_t start_len = context - start - 1;
   char *end = strtok_s(NULL, "-", &context);
+  size_t end_len = context - end;
+  if (*context != '\0') {
+    end_len -= 1;
+  }
 
-  for (end = end; str_cmp_as_num(start, end) <= 0; end = dec_str(end)) {
+  for (; str_cmp_as_num(start, start_len, end, end_len) <= 0;
+       end_len = dec_str(end, end_len)) {
 
-    if (check_for_repetition_str(end, exact)) {
+    if (check_for_repetition_str(end, end_len, exact)) {
 
       range_sum += strtoull(end, NULL, 10);
     }
@@ -185,6 +190,6 @@ uint64_t get_total_invalid_sum(char *lines, uint64_t exact) {
 int main(int argc, char **argv) {
   FILE *aoc = open_file_from_args(argc, argv);
   char *lines = read_file(aoc);
-  // printf("%d\n", str_cmp_as_num("1188511880", "1188511885"));
+
   printf("sum: %llu", get_total_invalid_sum(lines, UINT64_MAX));
 }
