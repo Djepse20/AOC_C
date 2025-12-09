@@ -12,4 +12,5 @@ uint64_t convert_to_char(char num);
 char *dec_str(char *str);
 
 char *inc_str(char *str);
-int repeats_pat(char *str, size_t pat_start, size_t pat_end);
+int repeats_pat(const char *str, size_t pat_start, size_t pat_end);
+int str_cmp_as_num(const char *str1, const char *str2);

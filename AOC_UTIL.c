@@ -73,7 +73,7 @@ char *inc_str(char *str) {
   return str;
 }
 
-int repeats_pat(char *str, size_t pat_start, size_t pat_end) {
+int repeats_pat(const char *str, size_t pat_start, size_t pat_end) {
 
   size_t str_len = strlen(str);
 
@@ -94,9 +94,18 @@ int repeats_pat(char *str, size_t pat_start, size_t pat_end) {
   return 1;
 }
 
+int str_cmp_as_num(const char *str1, const char *str2) {
+  size_t len1 = strlen(str1);
+  size_t len2 = strlen(str2);
+  if (len1 != len2) {
+    return len1 < len2 ? -1 : 1;
+  }
+  return strcmp(str1, str2);
+}
+
 FILE *open_file_from_args(int argc, char **argv) {
   if (argc < 2) {
-    printf("file not specified, closing..");
+    printf("please input file");
     exit(EXIT_FAILURE);
   }
   FILE *file;

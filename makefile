@@ -1,7 +1,7 @@
 run: build execute
 
 build:
-	gcc AOC_$(day)/AOC_$(day).c AOC_UTIL.c -o a.exe
+	gcc -g AOC_$(day)/AOC_$(day).c AOC_UTIL.c -o a.exe
 
 execute:
 	./a.exe AOC_$(day)/AOC_$(day).txt

@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build day",
+            "type": "shell",
+            "command": "make",
+            "args": ["day=${input:dayNumber}", "build"],
+            "problemMatcher": ["$gcc"]
+        }
+    ],
+    "inputs": [
+        {
+            "id": "dayNumber",
+            "type": "promptString",
+            "description": "Enter the day number for building and debugging"
+        }
+    ]
+}

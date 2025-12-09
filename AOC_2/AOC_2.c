@@ -157,17 +157,13 @@ uint64_t sum_invalids_in_range(char *range, uint64_t exact) {
   char *context;
 
   char *start = strtok_s(range, "-", &context);
-
   char *end = strtok_s(NULL, "-", &context);
-  size_t start_val = strtoull(start, NULL, 10);
-  size_t end_val = strtoull(end, NULL, 10);
 
-  for (start_val = start_val; start_val <= end_val;
-       start_val++, start = inc_str(start)) {
+  for (end = end; str_cmp_as_num(start, end) <= 0; end = dec_str(end)) {
 
-    if (check_for_repetition_str(start, exact)) {
-      printf("%s\n", start);
-      range_sum += start_val;
+    if (check_for_repetition_str(end, exact)) {
+
+      range_sum += strtoull(end, NULL, 10);
     }
   }
   return range_sum;
@@ -189,5 +185,6 @@ uint64_t get_total_invalid_sum(char *lines, uint64_t exact) {
 int main(int argc, char **argv) {
   FILE *aoc = open_file_from_args(argc, argv);
   char *lines = read_file(aoc);
+  // printf("%d\n", str_cmp_as_num("1188511880", "1188511885"));
   printf("sum: %llu", get_total_invalid_sum(lines, UINT64_MAX));
 }
