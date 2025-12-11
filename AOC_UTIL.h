@@ -14,3 +14,6 @@ int inc_str(char *str);
 int repeats_pat(const char *str, size_t str_len, char *pat, size_t pat_len);
 int str_cmp_as_num(const char *str1, size_t len1, const char *str2,
                    size_t len2);
+
+uint64_t max(uint64_t val1, uint64_t val2);
+uint64_t min(uint64_t val1, uint64_t val2);

@@ -93,6 +93,20 @@ size_t repeats_pat(const char *str, size_t str_len, const char *pat,
   return 1;
 }
 
+uint64_t max(uint64_t val1, uint64_t val2) {
+  if (val1 > val2) {
+    return val1;
+  }
+  return val2;
+}
+
+uint64_t min(uint64_t val1, uint64_t val2) {
+  if (val1 < val2) {
+    return val1;
+  }
+  return val2;
+}
+
 FILE *open_file_from_args(int argc, char **argv) {
   if (argc < 2) {
     printf("please input file");
