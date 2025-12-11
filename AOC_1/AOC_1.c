@@ -65,8 +65,6 @@ int16_t get_zero_count(char *lines) {
 
 int main(int argc, char **argv) {
   FILE *aoc = open_file_from_args(argc, argv);
-  char *lines = read_file(aoc);
-  uint16_t zero_count = get_zero_count(lines);
-  char num[] = "5493345931999";
-  printf("%s", inc_str(num));
+  FileBuffer lines = read_file(aoc);
+  uint16_t zero_count = get_zero_count(lines.buffer);
 }

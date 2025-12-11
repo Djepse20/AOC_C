@@ -123,6 +123,6 @@ uint64_t jolt_sum(char *lines) {
 
 int main(int argc, char **argv) {
   FILE *aoc = open_file_from_args(argc, argv);
-  char *lines = read_file(aoc);
-  printf("%llu", jolt_sum(lines));
+  FileBuffer lines = read_file(aoc);
+  printf("%llu", jolt_sum(lines.buffer));
 }

@@ -97,9 +97,9 @@ uint64_t ids_that_are_fresh(Ranges r) {
 
 int main(int argc, char **argv) {
   FILE *aoc = open_file_from_args(argc, argv);
-  char *lines = read_file(aoc);
+  FileBuffer lines = read_file(aoc);
   char *context = NULL;
-  Ranges r = load_ranges(lines, &context);
+  Ranges r = load_ranges(lines.buffer, &context);
 
   printf("%llu\n", ids_that_are_fresh(r));
 }

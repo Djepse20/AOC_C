@@ -1,24 +1,44 @@
+#include "aoc_util.h"
 #include "stdio.h"
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-char *read_file(FILE *aoc) {
+
+FileBuffer read_file(FILE *aoc) {
   size_t len = 0;
   size_t cap = 2;
 
   char *lines = malloc(cap);
   char *str;
-
-  while (fgets(lines + len, cap - len, aoc) != NULL) {
-    len = strlen(lines);
+  size_t read = 0;
+  while ((read = fread(lines + len, sizeof(char), cap - len, aoc)) > 0) {
+    len += read;
     if (cap <= len + 1) {
       cap *= 2;
       lines = realloc(lines, cap);
     }
   }
+  if (cap < len + 1) {
+    lines = realloc(lines, len + 1);
+  }
+  lines[len] = '\0';
+  // Close the filer petarrr
+  fclose(aoc);
 
-  return lines;
+  return (FileBuffer){.buffer = lines, .len = len};
+}
+
+FILE *open_file_from_args(int argc, char **argv) {
+  if (argc < 2) {
+    printf("please input file");
+    exit(EXIT_FAILURE);
+  }
+  FILE *file;
+  // VERY IMPORTANT TO OPEN IN BINARY
+  //  So that when using ftell, it gives the number of bytes we have
+  fopen_s(&file, argv[1], "r");
+  return file;
 }
 
 int16_t mod(int16_t a, int16_t b) { return (a % b + b) % b; }
@@ -44,32 +64,32 @@ int dec_str(char *str, size_t len) {
   return len;
 }
 
-char *inc_str(char *str) {
+// char *inc_str(char *str) {
 
-  size_t len = strlen(str);
+//   size_t len = strlen(str);
 
-  for (size_t idx = len - 1; idx >= 0; idx--) {
+//   for (size_t idx = len - 1; idx >= 0; idx--) {
 
-    if (get_num(str[idx]) != 9) {
-      str[idx] += 1;
+//     if (get_num(str[idx]) != 9) {
+//       str[idx] += 1;
 
-      break;
-    }
-    /*Not optimal, should proably keep track of len another way*/
-    /* implementing a string type would be nice    */
-    if (get_num(str[idx]) == 9 && idx == 0) {
-      str = calloc(len + 2, sizeof(char));
-      str[0] = '1';
+//       break;
+//     }
+//     /*Not optimal, should proably keep track of len another way*/
+//     /* implementing a string type would be nice    */
+//     if (get_num(str[idx]) == 9 && idx == 0) {
+//       str = calloc(len + 2, sizeof(char));
+//       str[0] = '1';
 
-      memset(str + 1, convert_to_char(0), len);
+//       memset(str + 1, convert_to_char(0), len);
 
-      str[len + 1] = '\0';
-      break;
-    }
-    str[idx] = convert_to_char(0);
-  }
-  return str;
-}
+//       str[len + 1] = '\0';
+//       break;
+//     }
+//     str[idx] = convert_to_char(0);
+//   }
+//   return str;
+// }
 int str_cmp_as_num(const char *str1, size_t len1, const char *str2,
                    size_t len2) {
 
@@ -105,14 +125,4 @@ uint64_t min(uint64_t val1, uint64_t val2) {
     return val1;
   }
   return val2;
-}
-
-FILE *open_file_from_args(int argc, char **argv) {
-  if (argc < 2) {
-    printf("please input file");
-    exit(EXIT_FAILURE);
-  }
-  FILE *file;
-  fopen_s(&file, argv[1], "r");
-  return file;
 }

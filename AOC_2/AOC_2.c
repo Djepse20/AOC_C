@@ -186,7 +186,7 @@ uint64_t get_total_invalid_sum(char *lines, uint64_t exact) {
 
 int main(int argc, char **argv) {
   FILE *aoc = open_file_from_args(argc, argv);
-  char *lines = read_file(aoc);
+  FileBuffer lines = read_file(aoc);
 
-  printf("sum: %llu", get_total_invalid_sum(lines, UINT64_MAX));
+  printf("sum: %llu", get_total_invalid_sum(lines.buffer, UINT64_MAX));
 }
