@@ -1,9 +1,9 @@
-run: build execute
+run: build exe
 
 build:
 	gcc -g AOC_$(day)/AOC_$(day).c AOC_UTIL.c -o a.exe
 
-execute:
+exe:
 	./a.exe AOC_$(day)/AOC_$(day).txt
 
 create: folders files
