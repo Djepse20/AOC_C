@@ -125,4 +125,5 @@ int main(int argc, char **argv) {
   FILE *aoc = open_file_from_args(argc, argv);
   FileBuffer lines = read_file(aoc);
   printf("%llu", jolt_sum(lines.buffer));
+  return 0;
 }

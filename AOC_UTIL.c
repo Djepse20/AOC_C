@@ -10,7 +10,6 @@ FileBuffer read_file(FILE *aoc) {
   size_t cap = 2;
 
   char *lines = malloc(cap);
-  char *str;
   size_t read = 0;
   while ((read = fread(lines + len, sizeof(char), cap - len, aoc)) > 0) {
     len += read;

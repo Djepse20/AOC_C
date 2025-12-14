@@ -98,9 +98,10 @@ uint64_t parse_vertical_line_vertically_rev(FileBuffer b, size_t width,
   char *op_line = get_val(b.buffer, width, height - 1, 0);
 
   char *op = NULL;
-  for (size_t i = 0; i < offset; i++) {
+  for (size_t i = offset; i-- > 0;) {
     if (op_line[i] == '+' || op_line[i] == '*') {
       op = &op_line[i];
+      break;
     }
   }
 
@@ -159,5 +160,6 @@ int main(int argc, char **argv) {
   FILE *aoc = open_file_from_args(argc, argv);
 
   FileBuffer lines = read_file(aoc);
-  printf("%llu", parse_lines(lines));
+  printf("%llu", parse_lines_reverse(lines));
+  return 0;
 }

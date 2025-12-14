@@ -128,8 +128,7 @@ int main(int argc, char **argv) {
   FILE *aoc = open_file_from_args(argc, argv);
   FileBuffer lines = read_file(aoc);
   Matrix m = create_matrix(lines.buffer);
-  printf("%llu\n", m.height);
-  printf("%llu\n", m.width);
 
   printf("%llu", keep_going(m, 4));
+  return 0;
 }

@@ -20,7 +20,8 @@ define AOCTemplate
 #include <string.h>
 int main(int argc, char **argv) {
   FILE *aoc = open_file_from_args(argc, argv);
-  char *lines = read_file(aoc);
+  FileBuffer lines = read_file(aoc);
+  return 0;
 }
 endef
 
