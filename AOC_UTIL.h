@@ -38,7 +38,6 @@ uint64_t min(uint64_t val1, uint64_t val2);
     }                                                                          \
     s->items[s->len] = item;                                                   \
     s->len++;                                                                  \
-    printf("len:%llu \n", s->len);                                             \
   }                                                                            \
   type *stack_pop##type(Stack##type *s) {                                      \
     if (s->len == 0) {                                                         \
@@ -90,7 +89,6 @@ uint64_t min(uint64_t val1, uint64_t val2);
     type *prev = s->items;                                                     \
     s->cap *= 2;                                                               \
     s->items = malloc(sizeof(*s->items) * s->cap);                             \
-    printf("%llu %llu %llu\n", s->end, s->start, prev_cap - s->start);         \
                                                                                \
     if (s->end <= s->start) {                                                  \
       memcpy(s->items, prev + s->start,                                        \
@@ -134,7 +132,6 @@ uint64_t min(uint64_t val1, uint64_t val2);
     }                                                                          \
     s->len++;                                                                  \
     s->start = s->start == 0 ? s->cap - 1 : s->start - 1;                      \
-    printf("hmmm: %llu\n", s->start);                                          \
     s->items[s->start] = item;                                                 \
   }                                                                            \
   type *vec_pop_front##type(Vec##type *s) {                                    \
