@@ -13,7 +13,7 @@ FileBuffer read_file(FILE *aoc) {
   size_t read = 0;
   while ((read = fread(lines + len, sizeof(char), cap - len, aoc)) > 0) {
     len += read;
-    if (cap <= len + 1) {
+    if (cap <= len) {
       cap *= 2;
       lines = realloc(lines, cap);
     }
